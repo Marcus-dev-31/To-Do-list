@@ -1,0 +1,30 @@
+.app {
+  max-width: 520px;
+  margin: 48px auto;
+  padding: 0 16px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #2a2f3a;
+  background: #141824;
+  color: inherit;
+}
+
+button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #2a2f3a;
+  background: #1f6feb;
+  color: white;
+  cursor: pointer;
+}
+
+ul { padding-left: 18px; }
