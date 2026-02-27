@@ -19,6 +19,11 @@ export const App = () => {
     setText("");
   };
 
+  const handleDelete = (id) => {
+    setTask((prev) => prev.filter((t) => t.id !== id));
+  };
+
+
   return (
     <main className="app">
       <h1>To-Do App</h1>
@@ -31,12 +36,15 @@ export const App = () => {
           onChange={textoCapturado}
         />
 
-        <button onClick={handleAdd}>Agregar</button>
+        <button onClick={handleAdd} disabled={!text.trim()}>Agregar</button>
       </div>
 
       <ul>
         {tasks.map( (task) => (
-          <li key = {task.id}>{task.text}</li>
+          <li key = {task.id}>
+            {task.text}
+            <button onClick={() => handleDelete(task.id)}>Eliminar</button>
+          </li>
         ) )}
       </ul>
     </main>
