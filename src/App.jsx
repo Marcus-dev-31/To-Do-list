@@ -1,52 +1,64 @@
 import { useState } from "react";
 import "./App.css";
+import { TodoForm } from "./components/TodoForm";
+import { TodoList } from "./components/TodoList";
 
 export const App = () => {
   const [text, setText] = useState("");
-  const [tasks, setTask] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const total = tasks.length;
+  const pending = tasks.filter((t) => !t.done).length;
 
+
+//Captura el texto
   const textoCapturado = (e) => {
     setText(e.target.value);
   };
 
+
+//Agrega la tarea
   const handleAdd = () => {
     const clean = text.trim();
-    if(!clean) return;
+    if (!clean) return;
 
     const newTask = { id: crypto.randomUUID(), text: clean, done: false };
 
-    setTask( (prev) => [...prev, newTask] );
+    setTasks((prev) => [...prev, newTask]);
     setText("");
   };
 
+//Elimina la tarea
   const handleDelete = (id) => {
-    setTask((prev) => prev.filter((t) => t.id !== id));
+    setTasks((prev) => prev.filter((t) => t.id !== id));
   };
 
+  const handleToggle = (id) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
+    );
+  };
 
   return (
     <main className="app">
+
       <h1>To-Do App</h1>
 
-      <div className="row">
-        <input
-          type="text"
-          placeholder="Agrega tu nueva tarea"
-          value={text}
-          onChange={textoCapturado}
-        />
+      <TodoForm 
+        text={text}
+        onTextChange={textoCapturado}
+        onAdd={handleAdd}
+        disabled={!text.trim()}
+      />
 
-        <button onClick={handleAdd} disabled={!text.trim()}>Agregar</button>
-      </div>
+      <p className="meta">
+        Pendientes: <strong>{pending}</strong> · Total: <strong>{total}</strong>
+      </p>
 
-      <ul>
-        {tasks.map( (task) => (
-          <li key = {task.id}>
-            {task.text}
-            <button onClick={() => handleDelete(task.id)}>Eliminar</button>
-          </li>
-        ) )}
-      </ul>
+      <TodoList
+        tasks={tasks}
+        onToggle={handleToggle}
+        onDelete={handleDelete}
+      />
     </main>
   );
 };
